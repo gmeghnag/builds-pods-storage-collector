@@ -2,6 +2,8 @@
 
 ```
 oc apply -k https://github.com/gmeghnag/builds-pods-storage-collector.git
+```
+```
 oc logs -n builds-pods-storage-collector $(oc get po -l app=builds-pods-storage-collector -n builds-pods-storage-collector -o jsonpath='{.items[0].metadata.name}') -f | jq
 ```
 
