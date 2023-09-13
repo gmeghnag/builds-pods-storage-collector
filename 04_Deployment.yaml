@@ -29,7 +29,7 @@ spec:
           - -c
           - |
             set -euo pipefail
-            while true; do oc get node -l node-role.kubernetes.io/worker= -l node-role.kubernetes.io/infra= -o json| jq '.items[].metadata.name' -r | while read NODE; do oc get --raw /api/v1/nodes/${NODE}/proxy/stats/summary  | jq --arg nodeName $NODE --arg namespace $NAMESPACE '.pods[] | . as $parent | select($parent.podRef.name| contains("build")) | "{\"DateTimeUTC\": \"" + (now | todateiso8601) + "\", \"Node\": \"" + $nodeName + "\", \"Namespace\": \"" + $parent.podRef.namespace + "\"," + " \"PodName\": \"" + $parent.podRef.name + "\"," + " \"UsedGB\": \"" + ($parent."ephemeral-storage".usedBytes/1024/1024/1024|tostring) + "\"}"' -r; done && sleep $SLEEP_INTERVAL; done
+            while true; do oc get node -l node-role.kubernetes.io/worker= -l node-role.kubernetes.io/infra= -o json| jq '.items[].metadata.name' -r | while read NODE; do oc get --raw /api/v1/nodes/${NODE}/proxy/stats/summary  | jq --arg nodeName $NODE '.pods[] | . as $parent | select($parent.podRef.name| contains("build")) | "{\"DateTimeUTC\": \"" + (now | todateiso8601) + "\", \"Node\": \"" + $nodeName + "\", \"Namespace\": \"" + $parent.podRef.namespace + "\"," + " \"PodName\": \"" + $parent.podRef.name + "\"," + " \"UsedGB\": \"" + ($parent."ephemeral-storage".usedBytes/1024/1024/1024|tostring) + "\"}"' -r; done && sleep $SLEEP_INTERVAL; done
         resources:
           limits:
             cpu: 100m
