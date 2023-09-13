@@ -1,11 +1,11 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cluster-admin-builds-pods-storage-collector
+  name: cluster-role-builds-pods-storage-collector
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin-builds-pods-storage-collector
+  name: cluster-role-builds-pods-storage-collector
 subjects:
 - kind: ServiceAccount
   name: builds-pods-storage-collector
